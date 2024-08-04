@@ -1,4 +1,6 @@
 using JobApplication.Models;
+using JobApplication.Services;
+using Moq;
 
 namespace JobApplication.Test
 {
@@ -26,12 +28,14 @@ namespace JobApplication.Test
         [Test]
         public void Application_WithNoTechStack_TransferredAutoRejected()
         {
-            var evaluater = new ApplicationEvaluators(null);
+            var mockValidator=new Mock<IIdentityValidateService >();
+            mockValidator.Setup(x=>x.IsValid(It.IsAny<string>())).Returns(true);
 
+            var evaluater = new ApplicationEvaluators(mockValidator.Object);
             var form = new JApplication()
             {
-                Applicant = new Applicant(),
-                 TechStackList=new System.Collections.Generic.List<string>() { ""}
+                Applicant = new Applicant() { Age = 19, IdentityNumber = "123456" },
+                 TechStackList =new System.Collections.Generic.List<string>() { ""}
             };
 
             var appResult = evaluater.Evaluate(form);
@@ -44,7 +48,9 @@ namespace JobApplication.Test
         [Test]
         public void Application_WithTechStackOver75P_TransferredAutoAccepted()
         {
-            var evaluater = new ApplicationEvaluators(null);
+            var mockValidator = new Mock<IIdentityValidateService>();
+            mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
+            var evaluater = new ApplicationEvaluators(mockValidator.Object);
 
             var form = new JApplication()
             {
