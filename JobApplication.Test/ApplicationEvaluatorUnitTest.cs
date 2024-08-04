@@ -7,7 +7,7 @@ namespace JobApplication.Test
         [Test]
         public void Application_WithUnderAge_TransferredAutoRejected()
         {
-            var evaluater = new ApplicationEvaluators();
+            var evaluater = new ApplicationEvaluators(null);
 
             var form = new JApplication()
             {
@@ -26,7 +26,7 @@ namespace JobApplication.Test
         [Test]
         public void Application_WithNoTechStack_TransferredAutoRejected()
         {
-            var evaluater = new ApplicationEvaluators();
+            var evaluater = new ApplicationEvaluators(null);
 
             var form = new JApplication()
             {
@@ -44,7 +44,7 @@ namespace JobApplication.Test
         [Test]
         public void Application_WithTechStackOver75P_TransferredAutoAccepted()
         {
-            var evaluater = new ApplicationEvaluators();
+            var evaluater = new ApplicationEvaluators(null);
 
             var form = new JApplication()
             {

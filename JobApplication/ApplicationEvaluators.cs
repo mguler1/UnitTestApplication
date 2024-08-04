@@ -4,20 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JobApplication.Models;
+using JobApplication.Services;
 namespace JobApplication
 {
     public class ApplicationEvaluators
     {
         private const int minAge = 18;
         private const int autoAcceptYearsofExperience = 15;
+        private readonly IIdentityValidateService _identityValidateService;
         private  List<string> teckStackList = new() {"C#","Java","Go" };
 
+        public ApplicationEvaluators(IIdentityValidateService identityValidateService)
+        {
+                 _identityValidateService = identityValidateService;
+        }
         public ApplicationResult Evaluate(JApplication form)
         {
             if (form.Applicant.Age<minAge)
             {
                 return ApplicationResult.AutoRejected;
             }
+            var valid = _identityValidateService.IsValid(form.Applicant.IdentityNumber);
             var sr = GetTechStackSimilarityRate(form.TechStackList);
             if (sr<25)
             {
